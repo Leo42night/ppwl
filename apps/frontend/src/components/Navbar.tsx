@@ -135,7 +135,9 @@ export function Navbar() {
                   <div className="flex items-center gap-2">
                     {/* Tombol Simpan Score - Diluar Badge agar lebih lega */}
                     {newAnsweredQuestionIds.length > 0 && (
-                      <Tooltip>
+                      // 1. Tambahkan state untuk mengontrol visibilitas manual jika diperlukan
+                      // Atau langsung gunakan prop jika ingin "dipaksa" tampil terus saat score max
+                      <Tooltip open={isScoreMax ? true : undefined}>
                         <TooltipTrigger asChild>
                           <Button
                             variant="default" // Ubah ke default agar lebih kontras sebagai aksi utama
@@ -152,7 +154,6 @@ export function Navbar() {
                             {loadingSaveScore ? "Menyimpan..." : "Simpan Score"}
                           </Button>
                         </TooltipTrigger>
-                        {/* ??? cara trigger tooltip ini muncul jika `isScoreMax` === true */}
                         <TooltipContent side="bottom">
                           <p>Simpan progres Anda sekarang!</p>
                         </TooltipContent>
