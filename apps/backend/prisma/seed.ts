@@ -10,9 +10,6 @@ async function seedStudents() {
   const studentB = JSON.parse(await Bun.file(path.resolve(__dirname, "../students-b.json")).text());
   // merge student-a.json & student-b.json
   const students = [...studentA, ...studentB];
-  // map change student.answer into JSON.stringify
-  // console.log(students);
-  // return;
   // loop periksa apakah ada students.email yg sama
   await Promise.all(
     students.map((student) =>

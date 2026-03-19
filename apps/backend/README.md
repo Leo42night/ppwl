@@ -1,6 +1,6 @@
 # deploy database
 Development (ingin ada history migrasi, jika ingin berganti)
-```
+```bash
 bunx prisma migrate dev --name init
 ```
 
@@ -21,5 +21,4 @@ turso db shell ppwl-2026 "DROP TABLE user_questions"
 turso db shell ppwl-2026 "DROP TABLE questions"
 turso db shell ppwl-2026 "DROP TABLE users"
 turso db shell ppwl-2026 < baseline.sql # lihat di prisma/migrations
-
 ```
