@@ -50,3 +50,4 @@ questions.json
 db.sqlite-shm
 db.sqlite-wal
 dummy.json
+.env*.local
