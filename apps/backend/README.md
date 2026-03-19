@@ -28,3 +28,7 @@ untuk sekarang, shared workspace monorepo tidak di gunakan karena bun vercel mon
     "shared": "workspace:*"
 }
 ```
+
+
+## Bug
+ada issue dimana server elysia tidak mau jalan karena pakai dependency workspace ("shared") 
