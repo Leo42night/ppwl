@@ -190,7 +190,7 @@ export function Navbar() {
                   <Button variant="ghost" className="relative h-9 w-9 rounded-full">
                     <Avatar className="h-9 w-9">
                       <AvatarImage src={user.picture} alt={user.name} />
-                      <AvatarFallback>{user.name.charAt(0) || ":)"}</AvatarFallback>
+                      <AvatarFallback>{user.name?.charAt(0) ?? ":)"}</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
