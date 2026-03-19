@@ -83,7 +83,7 @@ export const isJsonArray = (data: unknown): data is string => {
 
 export function validateAnswer(question: Question, answer: any) {
   if (answer === null || answer === undefined) return false;
-  console.log("validateAnswer", question, answer);
+  // console.log("validateAnswer", question, answer);
 
   switch (question.type) {
     case 1:

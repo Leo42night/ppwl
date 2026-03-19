@@ -7,7 +7,7 @@ export async function submitAnswer(
 ) {
   // question.correct_answer selalu string, jadi jika array stringify maka perlu convert
   const correctAnswer = isJsonArray(question.correct_answer) ? JSON.parse(question.correct_answer) : question.correct_answer;
-  // console.log("submitAnswer", question, userAnswer)
+  // console.log("submitAnswer (question, userAnswer)", question, userAnswer)
   // console.log("correctAnswer", correctAnswer)
   let isCorrect = false;
 
@@ -36,10 +36,15 @@ export async function submitAnswer(
       break;
 
     case 4:
+      // ['error', 'error'] → new Set → ['error'] → join → "error" → ✅
+      // ['error', 'message'] → ['error', 'message'] → join → "errormessage" → ❌
       // Regex: correct_answer "console\\.(log|error)"
       // userAnswer bisa string tunggal atau array string dari CodeFill
-      const inputString = Array.isArray(userAnswer) ? userAnswer.join("") : userAnswer;
-      const regex = new RegExp(correctAnswer as string);
+      // console.log(correctAnswer, userAnswer)
+      const inputString = Array.isArray(userAnswer)
+        ? [...new Set(userAnswer)].join("")
+        : userAnswer;
+      const regex = new RegExp(`^(${correctAnswer})$`);
       isCorrect = regex.test(inputString);
       break;
   }

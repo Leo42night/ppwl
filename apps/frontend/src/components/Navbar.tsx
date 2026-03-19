@@ -32,7 +32,6 @@ export function Navbar() {
     timeLimit,
     isScoreMax
   } = useAuth();
-
   const [loadingLogin, setLoadingLogin] = useState(false);
   const [loadingSaveScore, setLoadingSaveScore] = useState(false);
 

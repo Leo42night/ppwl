@@ -66,16 +66,11 @@ export default function QuestionPage() {
         const result = await submitAnswer(activeQuestion, currentAnswer);
 
         if (result.correct) {
-          toast.success(`Benar! +${activeQuestion.points} poin`, {
-            description: "Jawaban Anda tepat sekali.",
-            position: "top-left",
-          });
+          toast.success(`Benar! ✓ +${activeQuestion.points} poin`, { position: "top-left" })
           handleCorrect(activeQuestion.id, activeQuestion.points);
         } else {
-          toast.error("Jawaban Salah", {
-            description: "Coba periksa kembali jawaban Anda.",
-            position: "bottom-left",
-          });
+          toast.error("Salah ✗", { position: "top-left" })
+          getNextQuestion(notAnsweredQuestionIds); // ← tambah ini
         }
       } catch (e) {
         console.error(`Gagal submit ke server. ${e}`)
@@ -143,9 +138,13 @@ export default function QuestionPage() {
       setActiveQuestion(null);
       return;
     }
-    // ambil yang type 2
     const randomId = currentNotAnswered[Math.floor(Math.random() * currentNotAnswered.length)];
-    const found = questions.find((q) => q.id === randomId && q.type === 4);
+    const found = questions.find((q) => q.id === randomId);
+
+    // --- Custom debug --- 
+    // const found = questions.find((q) => q.id === randomId && q.type === 4);
+    // const randomId = 34;
+    // const found = questions.find((q) => q.id === randomId);
     if (found) {
       // console.log("activeQuestion", found);
       setActiveQuestion(found);
@@ -201,7 +200,7 @@ export default function QuestionPage() {
     if (!activeQuestion) return;
 
     if (!validateAnswer(activeQuestion, answer)) {
-      toast.error("Jawaban belum lengkap!", { position: "top-center" });
+      toast.error("Jawaban belum lengkap!", { position: "top-right" });
       return;
     }
 
@@ -216,9 +215,8 @@ export default function QuestionPage() {
         });
         handleCorrect(activeQuestion.id, activeQuestion.points);
       } else {
-        toast.error("Jawaban Salah", {
-          description: "Coba periksa kembali jawaban Anda."
-        });
+        toast.error("Jawaban Salah");
+        getNextQuestion(notAnsweredQuestionIds); // ← tambah ini
       }
     } catch (e) {
       toast.error("Error", {
@@ -246,6 +244,17 @@ export default function QuestionPage() {
     }
   }
 
+  // Tambah handler ini di dalam component
+  const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
+    // Type 3 & 4 (CodeFill) — biarkan Enter natural di textarea
+    if (activeQuestion?.type === 3 || activeQuestion?.type === 4) return;
+
+    if (e.key === "Enter" && !e.shiftKey && !loading) {
+      e.preventDefault();
+      onSubmit();
+    }
+  };
+
   if (activeQuestion) {
     return (
       <Card className="max-w-3xl mx-auto mt-8">
@@ -265,7 +274,7 @@ export default function QuestionPage() {
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmit} onKeyDown={handleFormKeyDown}>
             <div className="prose max-w-none mb-3">
               <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
                 {activeQuestion.question}

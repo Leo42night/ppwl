@@ -55,6 +55,7 @@ export type Question =
   | CodeFillExactQuestion
   | CodeFillRegexQuestion;
 
+
 export const STORAGE_KEY = "quiz_questions_v2";
 
 /**
@@ -120,3 +121,23 @@ export const Cipher = {
 // } catch (error) {
 //     console.error("Terjadi error:", (error as Error).message);
 // }
+
+
+// handle answer & correct_answer yang tidak string -> array or number
+export const isJsonArray = (data: unknown): data is string => {
+  // 1. Cek apakah tipe datanya string
+  if (typeof data !== 'string') return false;
+
+  // 2. Cek sekilas apakah diawali '[' dan diakhiri ']' untuk efisiensi
+  const trimmed = data.trim();
+  if (!trimmed.startsWith('[') || !trimmed.endsWith(']')) return false;
+
+  try {
+    // 3. Coba parse. Jika berhasil dan hasilnya array, return true
+    const result = JSON.parse(trimmed);
+    return Array.isArray(result);
+  } catch (e) {
+    // Jika gagal di-parse, berarti bukan JSON array yang valid
+    return false;
+  }
+};

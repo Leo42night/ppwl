@@ -4,6 +4,8 @@ import { QuestionService } from "../services/question.service";
 import type { QuestionType } from "../types";
 // import { Cipher } from 'shared'; // issue monorepo vercel elysia 
 import { SEED, Cipher } from "../utils";
+import type { Question } from "shared";
+import { Prisma } from "@prisma/client";
 
 export const questionRoute = new Elysia({ prefix: "/questions" })
   // security agak sulit (tapi masih bisa diakali)
@@ -46,9 +48,12 @@ export const questionRoute = new Elysia({ prefix: "/questions" })
 
   .post("/", async ({ body, status }) => {
     try {
-      return await QuestionService.create(body as QuestionType);
+      return await QuestionService.create(body as Question);
     } catch (e) {
-      return status(400, { message: "Bad request", error: e });
+      if (e instanceof Prisma.PrismaClientValidationError) {
+        return status(400, { message: "Data tidak valid", error: e.message });
+      }
+      return status(400, { message: "Bad request" });
     }
   }, {
     body: t.Object({
@@ -56,8 +61,13 @@ export const questionRoute = new Elysia({ prefix: "/questions" })
       language: t.Number(),
       type: t.Number(),
       question: t.String(),
-      answer: t.String(),
-      correct_answer: t.String(),
+      answer: t.Union([t.String(), t.Array(t.String())]),
+      correct_answer: t.Union([
+        t.Number(),
+        t.Array(t.Number()),
+        t.String(),
+        t.Array(t.String()),
+      ]),
       difficulty: t.Number(),
       points: t.Number(),
     }),
@@ -65,8 +75,11 @@ export const questionRoute = new Elysia({ prefix: "/questions" })
 
   .put("/:id", async ({ params: { id }, body, status }) => {
     try {
-      return await QuestionService.update(Number(id), body);
+      return await QuestionService.update(Number(id), body as Partial<Question>);
     } catch (e) {
+      if (e instanceof Prisma.PrismaClientValidationError) {
+        return status(400, { message: "Data tidak valid", error: e.message });
+      }
       return status(404, { message: "Question not found" });
     }
   }, {
@@ -75,8 +88,41 @@ export const questionRoute = new Elysia({ prefix: "/questions" })
       language: t.Optional(t.Number()),
       type: t.Optional(t.Number()),
       question: t.Optional(t.String()),
-      answer: t.Optional(t.String()),
-      correct_answer: t.Optional(t.String()),
+      answer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+      correct_answer: t.Optional(t.Union([
+        t.Number(),
+        t.Array(t.Number()),
+        t.String(),
+        t.Array(t.String()),
+      ])),
+      difficulty: t.Optional(t.Number()),
+      points: t.Optional(t.Number()),
+    }),
+  })
+
+  .put("/quick", async ({ body, status }) => {
+    try {
+      return await QuestionService.update(Number(body.id), body as Partial<Question>);
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientValidationError) {
+        return status(400, { message: "Data tidak valid", error: e.message });
+      }
+      return status(404, { message: "Question not found" });
+    }
+  }, {
+    body: t.Object({
+      id: t.Number(),
+      category: t.Optional(t.Number()),
+      language: t.Optional(t.Number()),
+      type: t.Optional(t.Number()),
+      question: t.Optional(t.String()),
+      answer: t.Optional(t.Union([t.String(), t.Array(t.String())])),
+      correct_answer: t.Optional(t.Union([
+        t.Number(),
+        t.Array(t.Number()),
+        t.String(),
+        t.Array(t.String()),
+      ])),
       difficulty: t.Optional(t.Number()),
       points: t.Optional(t.Number()),
     }),

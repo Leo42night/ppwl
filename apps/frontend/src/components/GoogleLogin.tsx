@@ -23,7 +23,7 @@ export default function GoogleAuthButton() {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         });
         const data = await res.json();
-        console.log("Google login data", data);
+        // console.log("Google login data", data);
         // ambil user dari backend
         const resUser = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/${data.id}`);
         if (!resUser.ok) throw new Error("Gagal ambil data user");

@@ -3,6 +3,7 @@ import KelolaSoal from '@/kelola_soal/Index';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import QuestionPage from './pages/QuestionPages';
 import MainLayout from '@/layouts/MainLayout';
+// import ViewQuestionPage from './pages/ViewQuestionPage';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
         path: "kelola-soal", // Ini akan muncul di "/kelola-soal"
         element: <KelolaSoal />,
       },
+      // {
+      //   path: "view-question/:id",
+      //   element: <ViewQuestionPage />,
+      // },
     ],
   },
 ]);

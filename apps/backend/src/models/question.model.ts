@@ -1,10 +1,18 @@
 // models/question.model.ts
 import { prisma } from "@/prisma/db";
-import type { QuestionType } from "@/src/types";
+import { isJsonArray, type Question } from "shared";
+import type { QuestionType } from "../types";
+
+function saveToString(value: any) {
+  if (Array.isArray(value)) return JSON.stringify(value);  // actual array → stringify
+  if (isJsonArray(value)) return value;                    // sudah string JSON array → biarkan
+  return value;                                            // string biasa / number → biarkan}
+}
 
 export const QuestionModel = {
-  async create(data: QuestionType) {
-    const result = await prisma.questions.create({ data });
+  async create(data: Question) {
+    const newData: QuestionType = { ...data, answer: saveToString(data.answer), correct_answer: saveToString(data.correct_answer) }
+    const result = await prisma.questions.create({ data: newData });
     return { success: true, lastInsertRowid: result.id };
   },
 
@@ -27,10 +35,11 @@ export const QuestionModel = {
     });
   },
 
-  async update(id: number, data: Partial<QuestionType>) {
+  async update(id: number, data: Partial<Question>) {
+    const newData = { ...data, answer: saveToString(data.answer), correct_answer: saveToString(data.correct_answer) }
     return prisma.questions.update({
       where: { id },
-      data,
+      data: newData,
     });
   },
 

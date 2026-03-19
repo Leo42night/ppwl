@@ -1,9 +1,9 @@
 // services/question.service.ts
 import { QuestionModel } from "@/src/models/question.model";
-import type { QuestionType } from "@/src/types";
+import type { Question } from "shared";
 
 export const QuestionService = {
-  async create(data: QuestionType) {
+  async create(data: Question) {
     return QuestionModel.create(data);
   },
 
@@ -26,7 +26,8 @@ export const QuestionService = {
     return QuestionModel.findByCategory(category);
   },
 
-  async update(id: number, data: Partial<QuestionType>) {
+  async update(id: number, data: Partial<Question>) {
+    console.log("data:", data);
     await QuestionService.findById(id);
     return QuestionModel.update(id, data);
   },

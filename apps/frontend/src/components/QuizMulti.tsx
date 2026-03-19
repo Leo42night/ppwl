@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
 
 interface Props {
   options: string[]
@@ -7,35 +8,37 @@ interface Props {
 }
 
 export default function QuizMulti({ options, onAnswer }: Props) {
-  // Gunakan state agar data tidak hilang saat re-render
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
 
-  function toggle(i: number) {
-    // Di React, kita harus membuat salinan baru (immutability) 
-    // agar React mendeteksi perubahan state
-    const newSelected = new Set(selectedIds);
+  useEffect(() => {
+    setSelectedIds(new Set());
+  }, [options]);
 
+  function toggle(i: number) {
+    const newSelected = new Set(selectedIds);
     if (newSelected.has(i)) {
       newSelected.delete(i);
     } else {
       newSelected.add(i);
     }
-
-    // Update state
     setSelectedIds(newSelected);
-
-    // Kirim data ke parent (konversi ke array)
     onAnswer(Array.from(newSelected));
-
-    // console.log("Current Selected:", Array.from(newSelected));
   }
+
+  const groupKey = options.join("|");
 
   return (
     <div className="space-y-2">
       {options.map((opt, i) => (
         <div key={i} className="flex items-center gap-2">
-          <Checkbox onCheckedChange={() => toggle(i)} />
-          <span>{opt}</span>
+          <Checkbox
+            id={`opt-${groupKey}-${i}`}
+            checked={selectedIds.has(i)}
+            onCheckedChange={() => toggle(i)}
+          />
+          <Label htmlFor={`opt-${groupKey}-${i}`} className="cursor-pointer">
+            {opt}
+          </Label>
         </div>
       ))}
     </div>
