@@ -209,10 +209,10 @@ export default function App() {
       <header className="sticky top-0 z-20 bg-background/95 backdrop-blur border-b border-border">
         <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="grid grid-cols-2 gap-[3px]">
+            <div className="grid grid-cols-2 gap-0.75">
               {([["bg-blue-500", "P"], ["bg-emerald-500", "P"], ["bg-amber-500", "W"], ["bg-rose-500", "L"]] as const).map(
                 (c, i) => (
-                  <div key={i} className={`rounded-[2px] ${c[0]} px-2 text-center text-xs`}>{c[1]}</div>
+                  <div key={i} className={`rounded-xs ${c[0]} px-2 text-center text-xs`}>{c[1]}</div>
                 )
               )}
             </div>

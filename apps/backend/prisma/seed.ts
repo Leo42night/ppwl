@@ -6,8 +6,8 @@ console.log("seed into DATABASE_URL...", process.env.DATABASE_URL);
 
 async function seedStudents() {
   // load student-a.json & student-b.json
-  const studentA = JSON.parse(await Bun.file(path.resolve(__dirname, "../students-a.json")).text());
-  const studentB = JSON.parse(await Bun.file(path.resolve(__dirname, "../students-b.json")).text());
+  const studentA = JSON.parse(await Bun.file(path.resolve(__dirname, "../data-students-a.json")).text());
+  const studentB = JSON.parse(await Bun.file(path.resolve(__dirname, "../data-students-b.json")).text());
   // merge student-a.json & student-b.json
   const students = [...studentA, ...studentB];
   // loop periksa apakah ada students.email yg sama
@@ -28,7 +28,7 @@ async function seedStudents() {
 async function seedQuestions() {
   console.log("seed Questions...");
   // 1. Load data
-  const fileContent = await Bun.file(path.resolve(__dirname, "../question_v2.json")).text();
+  const fileContent = await Bun.file(path.resolve(__dirname, "../data-questions.json")).text();
   const questions = JSON.parse(fileContent);
 
   // 2. Transform data

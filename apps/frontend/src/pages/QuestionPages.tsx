@@ -34,8 +34,9 @@ function validateAnswer(question: Question, answer: any) {
     case 2:
       return Array.isArray(answer) && answer.length > 0;
     case 3:
-      return Array.isArray(answer) && answer.length > 0 && answer.every((a: string) => a?.trim() !== "");
+      return Array.isArray(answer) && answer.length > 0 && answer.every((a: string) => a.trim() !== "");
     case 4:
+      if (typeof answer !== "string") return false;
       return (typeof answer === "string" && answer.trim() !== "") || (Array.isArray(answer) && answer.length > 0);
     default:
       return false;
@@ -50,7 +51,9 @@ export default function QuestionPage() {
     setActiveQuestion,
     setNewAnsweredQuestionIds,
     onTimeUpRef,
-    addScore
+    addScore,
+    isScoreMax,
+    setIsScoreMax
   } = useAuth();
 
   const [answer, setAnswer] = useState<any>(null)
@@ -169,6 +172,13 @@ export default function QuestionPage() {
   const handleCorrect = (qId: number, points: number) => {
     saveProgress(qId);
     addScore(points);
+    // cek user.score >= user.score_max -> notif "Selamat! Anda Berhasil melewati batas score."
+    if (!user) return;
+    if (user.score >= user.score_max && !isScoreMax) {
+      // ??? desain animasi "selebrasi" (efek confetty) yang lebih meriah dari sekadar taost.
+      toast.success("Selamat! Anda Berhasil melewati batas score.<br>Silakan simpan score anda!", { position: "top-left" })
+      setIsScoreMax(true);
+    }
     setNewAnsweredQuestionIds((prev) =>
       prev.includes(qId) ? prev : [...prev, qId]
     );

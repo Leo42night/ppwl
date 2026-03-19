@@ -40,3 +40,8 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # custom
 soal.md
 */**/.env.prod
+*/**/.env
+*/**/.env.development.local
+*/**/.env.production.local
+*/**/.sql
+*/**/data-*.json

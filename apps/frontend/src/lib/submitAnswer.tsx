@@ -29,7 +29,7 @@ export async function submitAnswer(
     case 3:
       // Exact Answer (Array of strings): correct_answer "[\"sayHello\", \"console.log\"]"
       if (Array.isArray(userAnswer) && Array.isArray(correctAnswer)) {
-        isCorrect = userAnswer.every((val, index) =>
+        isCorrect = userAnswer.every((val: string, index) =>
           val.trim() === (correctAnswer as string[])[index]
         );
       }

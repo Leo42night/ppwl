@@ -33,4 +33,4 @@ export const TYPE_COLORS: Record<number, string> = {
   4: "bg-red-50 text-red-700",
 };
 
-export const TIME_LIMIT = 20;
+export const TIME_LIMIT = 30;

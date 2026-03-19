@@ -36,6 +36,8 @@ interface MainContextType {
   timeLimit: number;
   onTimeUpRef: React.MutableRefObject<(() => Promise<void>) | null>;
   addScore: (points: number) => void;
+  isScoreMax: boolean;
+  setIsScoreMax: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const MainContext = createContext<MainContextType | undefined>(undefined);
@@ -54,6 +56,7 @@ export function MainProvider({ children }: { children: ReactNode }) {
   const [newAnsweredQuestionIds, setNewAnsweredQuestionIds] = useState<number[]>(
     () => safeParse(localStorage.getItem("new_answered_question_ids"), [])
   );
+  const [isScoreMax, setIsScoreMax] = useState(false);
 
   // handle paksa periksa jawaban sebelum time habis
   const onTimeUpRef = useRef<(() => Promise<void>) | null>(null);
@@ -210,7 +213,9 @@ export function MainProvider({ children }: { children: ReactNode }) {
         setActiveQuestion,
         timeLimit,
         onTimeUpRef,
-        addScore
+        addScore,
+        isScoreMax,
+        setIsScoreMax
       }}
     >
       {children}

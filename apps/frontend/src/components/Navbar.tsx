@@ -30,6 +30,7 @@ export function Navbar() {
     setNewAnsweredQuestionIds,
     activeQuestion,
     timeLimit,
+    isScoreMax
   } = useAuth();
 
   const [loadingLogin, setLoadingLogin] = useState(false);
@@ -111,7 +112,7 @@ export function Navbar() {
         </div>
 
         {/* Timer */}
-        <div className="hidden md:flex items-center gap-1 text-sm font-medium min-w-[60px] justify-center">
+        <div className="hidden md:flex items-center gap-1 text-sm font-medium min-w-15 justify-center">
           {activeQuestion && (
             <>
               <Timer className={`w-4 h-4 ${timerColor}`} />
@@ -151,6 +152,7 @@ export function Navbar() {
                             {loadingSaveScore ? "Menyimpan..." : "Simpan Score"}
                           </Button>
                         </TooltipTrigger>
+                        {/* ??? cara trigger tooltip ini muncul jika `isScoreMax` === true */}
                         <TooltipContent side="bottom">
                           <p>Simpan progres Anda sekarang!</p>
                         </TooltipContent>
