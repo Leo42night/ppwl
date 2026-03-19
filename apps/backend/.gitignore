@@ -1,0 +1,52 @@
+# dependencies (bun install)
+node_modules
+
+# output
+out
+dist
+*.tgz
+
+# code coverage
+coverage
+*.lcov
+
+# logs
+logs
+_.log
+report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.local
+.env.production.local
+
+# caches
+.eslintcache
+.cache
+*.tsbuildinfo
+
+# IntelliJ based IDEs
+.idea
+
+# Finder (MacOS) folder config
+.DS_Store
+
+# Prisma DB & sqlite
+/generated/prisma
+*.sqlite
+
+/prisma/generated
+/src/generated/prisma
+
+.vercel
+
+# custom
+students-a.json
+students-b.json
+questions.json
+*.sql
+db.sqlite-shm
+db.sqlite-wal
+dummy.json
