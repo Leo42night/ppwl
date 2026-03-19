@@ -39,7 +39,7 @@ export default function GoogleAuthButton() {
       <div className="flex items-center gap-3 p-2 border rounded-lg w-fit transition-all animate-in fade-in zoom-in">
         <Avatar className="h-9 w-9">
           <AvatarImage src={user.picture} alt={user.name} />
-          <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+          <AvatarFallback>{user.name.charAt(0) || ":)"}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
           <span className="text-sm font-medium leading-none">{user.name}</span>

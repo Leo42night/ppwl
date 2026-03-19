@@ -21,6 +21,9 @@ export default defineConfig(({ mode }) => {
   return {
     // Sekarang Anda bisa menggunakan variabel env di sini jika butuh, 
     // misalnya untuk mengganti port secara dinamis:
+    build: {
+      sourcemap: true
+    },
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: { '@': path.resolve(__dirname, './src') }
