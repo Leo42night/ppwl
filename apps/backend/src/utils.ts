@@ -10,9 +10,7 @@ export function formatToString(value: any) {
 export const SEED = process.env.SEED;
 
 export const Cipher = {
-  /**
-   * Mengacak string menggunakan XOR cipher dan mengonversinya ke Hexadecimal
-   */
+  /** Mengacak string menggunakan XOR cipher dan mengonversinya ke Hexadecimal */
   encode: (text: string, key: string): string => {
     if (!key) throw new Error("Key must not be empty");
 

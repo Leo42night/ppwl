@@ -187,7 +187,9 @@ export default function App() {
       }
       setQuestions(updated);
       saveQuestions(updated);
-      toast.success(editingQuestion ? "Soal berhasil diupdate!" : "Soal berhasil disimpan!");
+      toast.success(editingQuestion ? "Soal berhasil diupdate!" : "Soal berhasil disimpan!", {
+        position: "top-left"
+      });
     },
     [editingQuestion, questions]
   );
