@@ -9,39 +9,14 @@ import QuizSingle from "@/components/QuizSingle"
 import QuizMulti from "@/components/QuizMulti"
 import CodeFill from "@/components/CodeFill"
 
-import type { Question } from "shared"
-
 import { submitAnswer } from "@/lib/submitAnswer"
 import { useAuth } from "@/context/MainContext"
-import { BACKEND_URL } from "@/types"
-import { safeParse } from "@/lib/utils"
+import { BACKEND_URL, type AnsweredLog } from "@/types"
+import { safeParse, validateAnswer } from "@/lib/utils"
 import { CATEGORIES, HL_LANGUAGES, LANGUAGES } from "@/constants"
 import { DifficultyStars, TypeBadge } from "@/components/shared"
 import { Badge } from "@/components/ui/badge"
-
-interface AnsweredLog {
-  user_id: number;
-  question_id: number;
-}
-
-function validateAnswer(question: Question, answer: any) {
-  if (answer === null || answer === undefined) return false;
-  // console.log(question, answer);
-
-  switch (question.type) {
-    case 1:
-      return typeof answer === "number";
-    case 2:
-      return Array.isArray(answer) && answer.length > 0;
-    case 3:
-      return Array.isArray(answer) && answer.length > 0 && answer.every((a: string) => a.trim() !== "");
-    case 4:
-      if (typeof answer !== "string") return false;
-      return (typeof answer === "string" && answer.trim() !== "") || (Array.isArray(answer) && answer.length > 0);
-    default:
-      return false;
-  }
-}
+import fireCelebration from "@/components/Confetty"
 
 export default function QuestionPage() {
   const {
@@ -120,7 +95,7 @@ export default function QuestionPage() {
 
   const fetchAnsweredIds = async () => {
     if (!user || questions.length === 0) return;
-
+    // console.log("fetchAnsweredIds user", user);
     const res = await fetch(`${BACKEND_URL}/api/users/${user.id}/question-ids`);
     if (!res.ok) return toast.error(`Gagal ambil riwayat quiz user: ${res.statusText}`);
 
@@ -153,6 +128,16 @@ export default function QuestionPage() {
     }
   }, [notAnsweredQuestionIds]);
 
+  // jawaban berhasil
+  useEffect(() => {
+    if (!user || isScoreMax) return;
+    if (user.score >= user.score_max) {
+      fireCelebration();
+      toast.success("Achieved score max!", { position: "bottom-left", icon: '🎉' });
+      setIsScoreMax(true);
+    }
+  }, [user?.score]);
+
   const getNextQuestion = (currentNotAnswered: number[]) => {
     if (currentNotAnswered.length === 0) {
       setActiveQuestion(null);
@@ -160,38 +145,36 @@ export default function QuestionPage() {
     }
     // ambil yang type 2
     const randomId = currentNotAnswered[Math.floor(Math.random() * currentNotAnswered.length)];
-    const found = questions.find((q) => q.id === randomId);
+    const found = questions.find((q) => q.id === randomId && q.type === 4);
     if (found) {
+      // console.log("activeQuestion", found);
       setActiveQuestion(found);
       setAnswer(null);
       answerRef.current = null; // reset ref juga
+    } else {
+      getNextQuestion(currentNotAnswered);
     }
   };
 
   // Helper: hapus id dari notAnswered lalu lanjut ke soal berikutnya
   const handleCorrect = (qId: number, points: number) => {
     saveProgress(qId);
-    addScore(points);
-    // cek user.score >= user.score_max -> notif "Selamat! Anda Berhasil melewati batas score."
     if (!user) return;
-    if (user.score >= user.score_max && !isScoreMax) {
-      // ??? desain animasi "selebrasi" (efek confetty) yang lebih meriah dari sekadar taost.
-      toast.success("Selamat! Anda Berhasil melewati batas score.<br>Silakan simpan score anda!", { position: "top-left" })
-      setIsScoreMax(true);
-    }
+
+    addScore(points);
     setNewAnsweredQuestionIds((prev) =>
       prev.includes(qId) ? prev : [...prev, qId]
     );
-    setNotAnsweredQuestionIds((prev) => {
-      const updated = prev.filter((id) => id !== qId);
-      localStorage.setItem("not_answered_question_ids", JSON.stringify(updated));
-      getNextQuestion(updated); // ← langsung pakai nilai terbaru
-      return updated;
-    });
+
+    // ✅ Hitung updated di luar updater, lalu panggil setState dan getNextQuestion terpisah
+    const updated = notAnsweredQuestionIds.filter((id) => id !== qId);
+    localStorage.setItem("not_answered_question_ids", JSON.stringify(updated));
+    setNotAnsweredQuestionIds(updated);
+    getNextQuestion(updated); // aman — dipanggil di event handler, bukan di updater
   };
 
   const getRandomQuestion = () => {
-    if (!user) return toast.error("Silakan Login dulu!");
+    if (!user) return toast.error("Silakan Login dulu!", { position: "top-left" });
     if (questions.length === 0 || notAnsweredQuestionIds.length === 0) {
       toast.info("Semua soal sudah dijawab!");
       return;
@@ -229,7 +212,7 @@ export default function QuestionPage() {
       if (result.correct) {
         toast.success(`Benar! +${activeQuestion.points} poin`, {
           description: "Jawaban Anda tepat sekali.",
-          position: "top-center"
+          position: "top-left"
         });
         handleCorrect(activeQuestion.id, activeQuestion.points);
       } else {

@@ -69,6 +69,7 @@ export function Navbar() {
 
     setLoadingSaveScore(true);
     try {
+      if (!user) return toast.error("Tidak ada user");
       // Simpan score user
       const resScore = await fetch(`${BACKEND_URL}/api/users/${user.id}`, {
         method: "PUT",
@@ -103,7 +104,7 @@ export function Navbar() {
         "text-green-500";
 
   return (
-    <nav className="border-b bg-background/95 lg:px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="border-b bg-background/95 px-2 lg:px-4 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container flex h-16 items-center justify-between mx-auto">
         {/* Logo */}
         <div className="flex items-center gap-2 font-bold text-xl">

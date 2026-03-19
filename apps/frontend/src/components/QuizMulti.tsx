@@ -27,7 +27,7 @@ export default function QuizMulti({ options, onAnswer }: Props) {
     // Kirim data ke parent (konversi ke array)
     onAnswer(Array.from(newSelected));
 
-    console.log("Current Selected:", Array.from(newSelected));
+    // console.log("Current Selected:", Array.from(newSelected));
   }
 
   return (

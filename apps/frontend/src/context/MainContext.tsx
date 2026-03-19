@@ -98,22 +98,28 @@ export function MainProvider({ children }: { children: ReactNode }) {
     try {
       // cari dari database
       const email = encodeURIComponent(googleData.email);
-      const res = await fetch(`${BACKEND_URL}/api/users?email=${email}`);
+      // console.log("email:", email);
+      // console.log(`${BACKEND_URL}/api/users/by-email?email=${email}`);
+      const res = await fetch(`${BACKEND_URL}/api/users/by-email?email=${email}`);
       if (!res.ok) throw new Error("Failed to fetch user");
-      const userData: UserProfile = await res.json();
-      if (!userData) {
-        toast.error(
-          `Email ${googleData.email} tidak terdaftar!\nPastikan menggunakan email classroom kelas PPWL 2026.`
-        );
+
+      // Ambil sebagai text dulu untuk memastikan ada isinya
+      const text = await res.text();
+      // console.log("textData", text);
+
+      if (!text || text.trim().length === 0) {
+        toast.error(`Email ${googleData.email} tidak terdaftar!\nPastikan menggunakan email classroom kelas PPWL 2026.`, { duration: 5000, icon: "🚫" });
         return;
       }
+
+      const userData: UserProfile = JSON.parse(text);
+
       if (userData.score > 0) toast("Riwayat Score terdeteksi");
-      // console.log("userData:", userData);
       setUserState(userData);
       localStorage.setItem("user", JSON.stringify(userData));
       return userData;
     } catch (error) {
-      toast.error(`Error setelah login: ${error}`);
+      toast.error(`Gagal login: ${error}`);
     }
   };
 

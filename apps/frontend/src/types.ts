@@ -40,6 +40,11 @@ export type Question =
   | CodeFillExactQuestion
   | CodeFillRegexQuestion;
 
+export interface AnsweredLog {
+  user_id: number;
+  question_id: number;
+}
+
 export const STORAGE_KEY = "quiz_questions_v2";
 export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 

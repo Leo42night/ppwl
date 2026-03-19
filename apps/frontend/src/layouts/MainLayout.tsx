@@ -5,11 +5,11 @@ export default function MainLayout() {
   return (
     <div className="relative flex min-h-screen flex-col justify-center">
       <Navbar />
-      <main className="flex-1 container py-8 mx-auto">
+      <main className="flex-1 container py-8 mx-auto px-2">
         <Outlet />
       </main>
       <footer className="p-4 border-t text-center text-sm">
-        © 2026 Praktikum Pemrogragam Web Lanjut - 2026 (Asdos | Sisfo UNTAN)
+        © 2026 - Praktikum Pemrogragam Web Lanjut (Asdos | Sisfo UNTAN)
       </footer>
     </div>
   );

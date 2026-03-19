@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import hljs from "@/lib/highlight"
 import { Input } from "@/components/ui/input"
 
@@ -17,6 +17,12 @@ function decodeEscapes(str: string) {
 export default function CodeFill({ template, language, onAnswer }: Props) {
   const [answers, setAnswers] = useState<string[]>([])
   const decodedTemplate = decodeEscapes(template)
+
+  // Reset saat soal (template) berganti
+  useEffect(() => {
+    setAnswers([]);
+    onAnswer([]);
+  }, [template]);
 
   const parts = useMemo(() => {
     return decodedTemplate.split(/(<<\d+>>)/g)
@@ -37,17 +43,14 @@ export default function CodeFill({ template, language, onAnswer }: Props) {
         {parts.map((p, i) => {
           if (p.match(/<<\d+>>/)) {
             const index = blankIndex++
-
             const maxChar = Number(p.match(/\d+/)?.[0] ?? 8)
-            // console.log("maxChar", maxChar);
+
             return (
               <Input
                 key={i}
                 maxLength={maxChar}
-                style={{
-                  width: `${maxChar + 3}ch`,
-                  fontFamily: "monospace"
-                }}
+                value={answers[index] ?? ""}
+                style={{ width: `${maxChar + 3}ch`, fontFamily: "monospace" }}
                 className="inline mx-1 py-0 h-8 my-1"
                 onChange={(e) => handleChange(index, e.target.value)}
               />
@@ -55,13 +58,7 @@ export default function CodeFill({ template, language, onAnswer }: Props) {
           }
 
           const html = hljs.highlight(p, { language, ignoreIllegals: true }).value
-
-          return (
-            <span
-              key={i}
-              dangerouslySetInnerHTML={{ __html: html }}
-            />
-          )
+          return <span key={i} dangerouslySetInnerHTML={{ __html: html }} />
         })}
       </code>
     </pre>

@@ -19,7 +19,7 @@ export function saveQuestions(questions: Question[]): void {
 }
 
 export function editorTemplateToApi(template: string): string {
-  console.log("template", template);
+  // console.log("template", template);
   return template
     .replace(/\[ANS:([^\]]*)\]/g, (_m, ans: string) => `<<${Math.max(ans.length, 4)}>>`)
     .replace(/\n/g, "\\n")
@@ -77,3 +77,25 @@ export const isJsonArray = (data: unknown): data is string => {
 // console.log(isJsonArray("[\"Elysia\",\"listen\"]")); // true
 // console.log(isJsonArray("[1, 2, 3]"));               // true
 // console.log(isJsonArray("{ \"key\": \"val\" }"));    // false (ini object)
+
+
+// ----- QuestionPage -----
+
+export function validateAnswer(question: Question, answer: any) {
+  if (answer === null || answer === undefined) return false;
+  console.log("validateAnswer", question, answer);
+
+  switch (question.type) {
+    case 1:
+      return typeof answer === "number";
+    case 2:
+      return Array.isArray(answer) && answer.length > 0;
+    case 3:
+      return Array.isArray(answer) && answer.length > 0 && answer.every((a: string) => a.trim() !== "");
+    case 4:
+      // answer string[]
+      return (typeof answer === "string" && answer.trim() !== "") || (Array.isArray(answer) && answer.length > 0);
+    default:
+      return false;
+  }
+}

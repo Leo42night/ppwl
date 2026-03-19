@@ -4,11 +4,13 @@ import { UserService } from "../services/user.service";
 import { UserQuestionsService } from "../services/user_questions.service";
 
 export const userRoute = new Elysia({ prefix: "/users" })
-  .get("/", async ({ query: { email }, status }) => {
+  .get("/by-email", async ({ query: { email }, status }) => {
     try {
-      return UserService.findByEmail(email);
+      const cleanEmail = decodeURIComponent(email);
+      // console.log("cleanEmail", cleanEmail);
+      return await UserService.findByEmail(cleanEmail);
     } catch (e) {
-      return status(404, { message: "User not found" });
+      return status(404, { message: "User not found", error: e });
     }
   }, {
     query: t.Object({
