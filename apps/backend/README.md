@@ -15,10 +15,8 @@ bunx prisma db execute --file file.sql && bun prisma/seed.ts && sqlite3 db.sqlit
 bunx prisma generate
 ```
 
-Jalankan query ke DB:
+Jalankan [turso CLI](https://docs.turso.tech/cli/introduction) DB production (pakai wsl jika di windows):
 ```bash
-turso db shell ppwl-2026 "DROP TABLE user_questions"
-turso db shell ppwl-2026 "DROP TABLE questions"
-turso db shell ppwl-2026 "DROP TABLE users"
-turso db shell ppwl-2026 < baseline.sql # lihat di prisma/migrations
+turso db shell ppwl-2026 < baseline.sql # reset ulang
+turso db shell ppwl-2026 < data.sql # push data baru
 ```
