@@ -4,7 +4,7 @@ import { QuestionService } from "../services/question.service";
 import type { QuestionType } from "../types";
 // import { Cipher } from 'shared'; // issue monorepo vercel elysia 
 import { SEED, Cipher } from "../utils";
-import type { Question } from "shared";
+import type { Question } from "../utils";
 import { Prisma } from "@prisma/client";
 
 export const questionRoute = new Elysia({ prefix: "/questions" })
