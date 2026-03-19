@@ -42,7 +42,7 @@ export const UserModel = {
   },
 
   async delete(id: number) {
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: any) => {
       await tx.user_questions.deleteMany({ where: { user_id: id } });
       return await tx.users.delete({
         where: { id }

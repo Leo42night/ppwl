@@ -2,8 +2,8 @@
 import Elysia, { t } from "elysia";
 import { QuestionService } from "../services/question.service";
 import type { QuestionType } from "../types";
-import { Cipher } from 'shared';
-import { ENCRYPTION_KEY } from "../utils";
+// import { Cipher } from 'shared'; // issue monorepo vercel elysia 
+import { SEED, Cipher } from "../utils";
 
 export const questionRoute = new Elysia({ prefix: "/questions" })
   // security agak sulit (tapi masih bisa diakali)
@@ -17,8 +17,8 @@ export const questionRoute = new Elysia({ prefix: "/questions" })
 
   .get("/", async ({ status }) => {
     const data = await QuestionService.findAll();
-    if (!ENCRYPTION_KEY) return status(404, { message: "Env elemen not found" });
-    const scrambled: string = Cipher.encode(JSON.stringify(data), ENCRYPTION_KEY);
+    if (!SEED) return status(404, { message: "Env elemen not found" });
+    const scrambled: string = Cipher.encode(JSON.stringify(data), SEED);
     return { data: scrambled };
   })
 

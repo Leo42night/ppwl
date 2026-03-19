@@ -9,7 +9,7 @@ export const UserQuestionsModel = {
         question_id: true
       }
     });
-    return data.map((item) => item.question_id);
+    return data.map((item: any) => item.question_id);
   },
 
   async create(user_id: number, question_id: number) {

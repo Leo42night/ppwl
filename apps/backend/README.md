@@ -20,3 +20,10 @@ Jalankan [turso CLI](https://docs.turso.tech/cli/introduction) DB production (pa
 turso db shell ppwl-2026 < baseline.sql # reset ulang
 turso db shell ppwl-2026 < data.sql # push data baru
 ```
+
+untuk sekarang, shared workspace monorepo tidak di gunakan karena bun vercel monorepo elysia. Saya coba build dari root monorepo tapi gagal terus. hanya berhasil jika deploy dari backend ini.
+```json
+"dependencies": {
+    "shared": "workspace:*"
+}
+```
