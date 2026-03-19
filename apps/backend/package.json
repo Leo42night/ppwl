@@ -10,7 +10,7 @@
     "db:sql": "bunx prisma migrate diff --from-empty --to-schema prisma/schema.prisma --script > baseline.sql",
     "db:seed": "bun --env-file=.env.prod prisma/seed.ts",
     "db:dev-seed": "bun prisma/seed.ts",
-    "build": "tsdown src/index.ts",
+    "build": "prisma generate && tsdown src/index.ts",
     "start": "bun src/index.ts"
   },
   "dependencies": {
