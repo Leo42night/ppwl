@@ -1,5 +1,5 @@
 import { PrismaLibSql } from "@prisma/adapter-libsql";
-import { PrismaClient } from "@/src/generated/prisma";
+import { PrismaClient } from "@prisma/client";
 
 // Perhatikan perubahan di sini: bungkus dalam objek { client: libsql }
 const adapter = new PrismaLibSql({
