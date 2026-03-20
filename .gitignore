@@ -42,6 +42,8 @@ soal.md
 */**/.env.prod
 */**/.env
 */**/.env.development.local
+*/**/.env.development
 */**/.env.production.local
+*/**/.env.production
 */**/.sql
 */**/data-*.json
