@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/index.ts",
+    "start": "bun --env-file=.env.production src/index.ts",
     "db:generate": "bun prisma generate",
     "db:push": "bun --env-file=.env.local x --bun prisma db push",
     "db:reset": "bun --env-file=.env.local x --bun prisma migrate reset --force",
