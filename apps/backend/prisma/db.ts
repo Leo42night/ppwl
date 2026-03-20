@@ -1,5 +1,5 @@
 import { PrismaLibSql } from "@prisma/adapter-libsql";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../node_modules/.prisma/client";
 import "dotenv/config";
 
 // Perhatikan perubahan di sini: bungkus dalam objek { client: libsql }
