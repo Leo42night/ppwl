@@ -54,7 +54,7 @@ export function MainProvider({ children }: { children: ReactNode }) {
   const [activeQuestion, setActiveQuestion] = useState<Question | null>(null);
   const [timeLimit, setTimeLimit] = useState(TIME_LIMIT); // Waktu limit dalam detik
   const [newAnsweredQuestionIds, setNewAnsweredQuestionIds] = useState<number[]>(
-    () => safeParse(localStorage.getItem("new_answered_question_ids"), [])
+    () => safeParse(localStorage.getItem("new_answered_question_ids_v2"), [])
   );
   const [isScoreMax, setIsScoreMax] = useState(false);
 
@@ -63,7 +63,7 @@ export function MainProvider({ children }: { children: ReactNode }) {
 
   // Sync newAnsweredQuestionIds ke localStorage tiap berubah
   useEffect(() => {
-    localStorage.setItem("new_answered_question_ids", JSON.stringify(newAnsweredQuestionIds));
+    localStorage.setItem("new_answered_question_ids_v2", JSON.stringify(newAnsweredQuestionIds));
   }, [newAnsweredQuestionIds]);
 
   // Fetch questions & users jika belum ada di localStorage
@@ -191,9 +191,9 @@ export function MainProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setUserState(null);
     localStorage.removeItem("user");
-    localStorage.removeItem("answered_question_ids");
-    localStorage.removeItem("not_answered_question_ids");
-    localStorage.removeItem("new_answered_question_ids");
+    localStorage.removeItem("answered_question_ids_v2");
+    localStorage.removeItem("not_answered_question_ids_v2");
+    localStorage.removeItem("new_answered_question_ids_v2");
   };
 
   // Tambah di dalam MainProvider
