@@ -27,7 +27,7 @@ export const QuestionService = {
   },
 
   async update(id: number, data: Partial<Question>) {
-    console.log("data:", data);
+    // console.log("data:", data);
     await QuestionService.findById(id);
     return QuestionModel.update(id, data);
   },
