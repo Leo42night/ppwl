@@ -1,8 +1,9 @@
 // routes/question.route.ts
 import Elysia, { t } from "elysia";
 import { QuestionService } from "../services/question.service";
-// import { Cipher } from 'shared'; // issue monorepo vercel elysia 
-import { SEED, Cipher } from "../utils";
+import { Cipher } from 'shared'; // issue monorepo vercel elysia 
+// import { Cipher } from "../utils";
+import { SEED } from "../utils";
 import type { Question } from "../utils";
 import { Prisma } from "@prisma/client";
 
