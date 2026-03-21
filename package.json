@@ -10,6 +10,7 @@
     "dev:frontend": "bun run --filter frontend dev",
     "dev:backend": "bun run --filter backend dev",
     "start:be": "cd apps/backend && bun run start",
+    "build:be": "bun run --filter backend build",
     "build": "bun run --filter '*' build"
   }
 }
