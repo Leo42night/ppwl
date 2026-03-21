@@ -100,6 +100,7 @@ export const questionRoute = new Elysia({ prefix: "/questions" })
     }),
   })
 
+  // untuk development di swagger untuk cepat ubah data
   .put("/quick", async ({ body, status }) => {
     try {
       return await QuestionService.update(Number(body.id), body as Partial<Question>);

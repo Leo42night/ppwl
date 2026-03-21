@@ -44,7 +44,7 @@ const MainContext = createContext<MainContextType | undefined>(undefined);
 
 export function MainProvider({ children }: { children: ReactNode }) {
   const [questions, setQuestions] = useState<Question[]>(() => {
-    const raw = safeParse(localStorage.getItem("questions"), []);
+    const raw = safeParse(localStorage.getItem("questions_v2"), []);
     return raw.map(normalizeQuestion);
   });
 
@@ -69,7 +69,7 @@ export function MainProvider({ children }: { children: ReactNode }) {
   // Fetch questions & users jika belum ada di localStorage
   useEffect(() => {
     const init = async () => {
-      if (localStorage.getItem("questions")) return;
+      if (localStorage.getItem("questions_v2")) return;
       try {
         if (!BACKEND_URL) throw new Error("BACKEND_URL is undefined");
 
@@ -84,7 +84,7 @@ export function MainProvider({ children }: { children: ReactNode }) {
         const normalized = safeParse(decodeQuestions, []).map(normalizeQuestion);
         // console.log("Normalized questions:", normalized);
         setQuestions(normalized);
-        localStorage.setItem("questions", JSON.stringify(normalized));
+        localStorage.setItem("questions_v2", JSON.stringify(normalized));
 
       } catch (err) {
         toast.error(`Gagal load questions: ${err}`);
