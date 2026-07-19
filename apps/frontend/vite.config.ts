@@ -20,8 +20,7 @@ export default defineConfig(({ mode }) => {
 
   const check = env.VITE_CHECK;
   if (!check) throw new Error("env is not detected");
-  console.log(`[LOG] Berhasil env (isProduction ${isProduction}):`, check)
-  console.log(`[LOG] process.env.NODE_ENV: ${process.env.NODE_ENV}`);
+  console.log(`[LOG] VITE_CHECK ${check} | isProduction ${isProduction} | process.env.NODE_ENV: ${process.env.NODE_ENV}`)
   return {
     // Sekarang Anda bisa menggunakan variabel env di sini jika butuh, 
     // misalnya untuk mengganti port secara dinamis:

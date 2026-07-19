@@ -65,7 +65,9 @@ export function MainProvider({ children }: { children: ReactNode }) {
   const [newAnsweredQuestionIds, setNewAnsweredQuestionIds] = useState<number[]>(
     () => safeParse(localStorage.getItem(NEW_ANS_Q_IDS_STORAGE_KEY), [])
   );
-  const [isScoreMax, setIsScoreMax] = useState(false);
+  const [isScoreMax, setIsScoreMax] = useState(() => {
+    return safeParse(localStorage.getItem("is_score_max"), false);
+  });
   const [notAnsweredQuestionIds, setNotAnsweredQuestionIds] = useState<number[]>(
     () => safeParse(localStorage.getItem(NOT_ANS_Q_IDS_STORAGE_KEY), [])
   );
@@ -73,6 +75,10 @@ export function MainProvider({ children }: { children: ReactNode }) {
   // handle paksa periksa jawaban sebelum time habis
   const onTimeUpRef = useRef<(() => Promise<void>) | null>(null);
 
+  // Sync isScoreMax ke localStorage tiap berubah
+  useEffect(() => {
+    localStorage.setItem("is_score_max", JSON.stringify(isScoreMax));
+  }, [isScoreMax]);
   // Sync newAnsweredQuestionIds ke localStorage tiap berubah
   useEffect(() => {
     localStorage.setItem(NEW_ANS_Q_IDS_STORAGE_KEY, JSON.stringify(newAnsweredQuestionIds));
@@ -142,7 +148,7 @@ export function MainProvider({ children }: { children: ReactNode }) {
       let userData: UserProfile;
       // cari dari database
       if (MODE === 'public') {
-        const maxScore = 100;
+        const maxScore = 10;
         toast.info(`Mode Public, diberi max score ${maxScore}`)
         userData = {
           id: 404, // dummy id 

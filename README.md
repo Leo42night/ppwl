@@ -1,5 +1,5 @@
 <img src="https://raw.githubusercontent.com/Leo42night/Leo42night/main/img/quiz-cs-banner.png" />
-Aplikasi Quiz dengan 4 tipe: Single, Multi, CodeFill, CodeRegex. Juga fitur Kelola Quiz.
+Aplikasi Quiz dengan 4 tipe: Single, Multi, CodeExact, CodeRegex. Juga fitur Kelola Quiz.
 
 > Initial Use-Case: Dipakai sebagai tugas pengganti *student* program CS yang ingin menambal nilai.
 

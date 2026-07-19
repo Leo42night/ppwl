@@ -145,7 +145,7 @@ export function Navbar() {
         </a>
 
         {/* Timer */}
-        {MODE === 'public' ? (
+        {MODE === 'public' && activeQuestion ? (
           <Button type="button" variant="secondary" onClick={showAnswer}>
             Lihat Jawaban
           </Button>
@@ -173,7 +173,7 @@ export function Navbar() {
 
                   <div className="flex items-center gap-2">
                     {/* Tombol Simpan Score - Diluar Badge agar lebih lega */}
-                    {newAnsweredQuestionIds.length > 0 && (
+                    {MODE !== 'public' && newAnsweredQuestionIds.length > 0 && (
                       // 1. Tambahkan state untuk mengontrol visibilitas manual jika diperlukan
                       // Atau langsung gunakan prop jika ingin "dipaksa" tampil terus saat score max
                       <Tooltip open={isScoreMax ? true : undefined}>
